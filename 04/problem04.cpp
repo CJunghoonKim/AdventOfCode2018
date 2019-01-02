@@ -14,6 +14,7 @@ int getDay(string line);    // day
 int getHour(string line);   // hour
 int getMinute(string line); // minute
 bool compareTimestamp(string t1, string t2); // comparator for sort
+int mostFrequent(vector<int> *v); // returns most frequently occuring element
 
 int main() {
   partOne("input.txt");
@@ -75,12 +76,12 @@ void partOne(string filename) {
       guard = i->first; // assign max
     }
   }
-
-
   // result
-  
+  cout << "Part I: " << guard * mostFrequent(sleepRanges[guard]) << endl;
   // free dynamically-allocated memory
-
+  for (map<int, vector<int>*>::iterator i = sleepRanges.begin(); i != sleepRanges.end(); i++) {
+    delete i->second;
+  }
   // close file
   file.close();
 }
@@ -118,4 +119,24 @@ bool compareTimestamp(string t1, string t2) {
     return getDay(t2) > getDay(t1);
   }
   return getMonth(t2) > getMonth(t1);
+}
+
+// simple naive implementation (dealing with small vectors)
+int mostFrequent(vector<int> *v) {
+  vector<int> &r = *v;
+  int res = r[0];
+  int countRes = 1;
+  for (int i = 0; i < r.size(); i++) {
+    int count = 0;
+    for (int j = 0; j < r.size(); j++) {
+      if (r[j] == r[i]) {
+        count++;
+      }
+      if (j == r.size() - 1 && count > countRes) {
+        res = r[i];
+        countRes = count;
+      }
+    }
+  }
+  return res;
 }
