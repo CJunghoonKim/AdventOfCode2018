@@ -35,7 +35,7 @@ void partOne(string filename) {
   // sort using our comparator
   sort(input.begin(), input.end(), compareTimestamp);
 
-  // first step is to figure out which guard sleeps the most
+  // pre-process sorted input
   int g, f, w; // g: ID, f: falls asleep, w: wakes up
   for (string i : input) {
     /* three possible actions:
@@ -69,7 +69,16 @@ void partOne(string filename) {
     }
   }
   // find guard who sleeps the most and the most probable minute
+  guard = sleepTimes.begin()->first;
+  for (map<int, int>::iterator i = sleepTimes.begin(); i != sleepTimes.end(); i++) {
+    if (i->second > sleepTimes[guard]) {
+      guard = i->first; // assign max
+    }
+  }
 
+
+  // result
+  
   // free dynamically-allocated memory
 
   // close file
