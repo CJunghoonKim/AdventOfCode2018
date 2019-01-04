@@ -9,7 +9,7 @@ using namespace std;
 void partOne(string filename);
 void partTwo(string filename);
 
-void reduce(string &l, int &i, int &size); // reduction of input through recursion
+void reduce(string &l, int &i); // reduction of input through recursion
 
 int main() {
   partOne("input.txt");
@@ -26,13 +26,17 @@ void partOne(string filename) {
   size = line.size();  // assign size
   file.close(); // close file
   /*
-    1. dabA[cC]aCBAcCcaDA
-    2. dab[Aa]CBAcCcaDA
-    3. dabCBA[cC]caDA
-    4. dabCBAcaDA
+    1. dabA[cC]aCBAcCcaDA   i = 4
+    2. dab[Aa]CBAcCcaDA     i = 3
+    3. dabCBA[cC]caDA       i = 6
+    4. dabCBAcaDA           i = END
     --> string length may change every iteration of while-loop
   */
-
+  while (i < line.size()-1) {
+    reduce(line, i);
+    i++;
+  }
+  cout << "Part I: " << line.size() << endl;
 }
 
 void reduce(string &l, int &i) {
@@ -48,13 +52,13 @@ void reduce(string &l, int &i) {
     reduce(l, i);
   }
   // terminating case at i == size-2
-  else if (i == size-2) {
+  else if (i == l.size()-2) {
     l = l.substr(0, l.size()-2);
     i = l.size()-1;
     return;
   }
   // general recursive case
-  l = l.substr(0, i-1) + l.substr(i+2, l.size()-i-2);
+  l = l.substr(0, i-1) + l.substr(i+1);
   i -= 1;
   reduce(l, i);
 }
