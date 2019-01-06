@@ -9,21 +9,21 @@ using namespace std;
 void partOne(string filename);
 void partTwo(string filename);
 
-void reduce(string &l, int &i); // reduction of input through recursion
+void reduce(string &l, int &i);  // reduction of input through recursion
+string prune(string &l, char c); // prunes string of given char input
 
 int main() {
   partOne("input.txt");
+  partTwo("input.txt");
   return 0;
 }
 
 void partOne(string filename) {
   fstream file(filename);
   string line;
-  int size;  // input length
   int i = 0; // input iterator
 
   getline(file, line); // input is 1 line
-  size = line.size();  // assign size
   file.close(); // close file
   /*
     1. dabA[cC]aCBAcCcaDA   i = 4
@@ -37,6 +37,30 @@ void partOne(string filename) {
     i++;
   }
   cout << "Part I: " << line.size() << endl;
+}
+
+void partTwo(string filename) {
+  fstream file(filename);
+  string line;
+  string pruned; // line pruned of given character
+  int size;  // resultant length
+  int k = 0; // input iterator
+
+  getline(file, line); // input is 1 line
+  file.close(); // close file
+
+  for (int i = 97; i < 123; i++) {
+    k = 0;
+    pruned = prune(line, i);
+    while (k < pruned.size()-1) {
+      reduce(pruned, k);
+      k++;
+    }
+    if (pruned.size() < size) {
+      size = pruned.size(); // new min
+    }
+  }
+  cout << "Part II: " << size << endl;
 }
 
 void reduce(string &l, int &i) {
@@ -61,4 +85,15 @@ void reduce(string &l, int &i) {
   l = l.substr(0, i-1) + l.substr(i+1);
   i -= 1;
   reduce(l, i);
+}
+
+string prune(string &l, char c) {
+  string res;
+  for (int i = 0; i < l.size(); i++) {
+    if (l[i] == c || l[i] == (char)(c-32)) {
+      continue;
+    }
+    res += l[i];
+  }
+  return res;
 }
