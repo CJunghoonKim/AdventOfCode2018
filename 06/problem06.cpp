@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -11,10 +12,10 @@ void partTwo(string filename);
 
 int distance(int x1, int y1, int x2, int y2); // Manhattan distance between two points
 int max(vector<int> &v); // find maximum
-int min(vector<int> &v); // find minimum
 
 int main() {
   partOne("input.txt");
+  // partTwo("input.txt");
   return 0;
 }
 
@@ -23,7 +24,6 @@ void partOne(string filename) {
   string line;
   vector<int> inputX;
   vector<int> inputY;
-  int x, y;
 
   while (file.is_good() && getline(file, line)) {
     // store input for pre-processing to determine grid parameters
@@ -33,7 +33,19 @@ void partOne(string filename) {
   file.close(); // close file
 
   int grid[max(inputX)][max(inputY)];
+  int mark = 0; // incrementing grid markers
+  int slots;    // number of free slots left in grid
 
+  // set initial grid state
+  for (int i = 0; i < inputX.size(); i++) {
+    grid[inputX[i]][inputY[i]] = mark;
+    mark++;
+  }
+  slots = max(inputX)*max(inputY) - inputX.size();
+
+  while (slots > 0) {
+    
+  }
 }
 
 int distance(int x1, int y1, int x2, int y2) {
@@ -44,16 +56,6 @@ int max(vector<int> &v) {
   int res = v[0];
   for (int i = 1; i < v.size(); i++) {
     if (v[i] > res) {
-      res = v[i];
-    }
-  }
-  return res;
-}
-
-int min(vector<int> &v) {
-  int res = v[0];
-  for (int i = 1; i < v.size(); i++) {
-    if (v[i] < res) {
       res = v[i];
     }
   }
