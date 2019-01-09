@@ -11,7 +11,9 @@ void partOne(string filename);
 void partTwo(string filename);
 
 int distance(int x1, int y1, int x2, int y2); // Manhattan distance between two points
-int max(vector<int> &v); // find maximum
+int max(vector<int> &v);                 // find maximum
+void clearGrid(int (&g)[][], int &size); // clear grid
+void radialExpansion(int (&g)[][], int &size, vector<int> &x, vector<int> &y); // perform expansion
 
 int main() {
   partOne("input.txt");
@@ -42,9 +44,11 @@ void partOne(string filename) {
     mark++;
   }
   slots = max(inputX)*max(inputY) - inputX.size();
-
+  clearGrid(grid, max(inputX));
+  
+  // populate grid
   while (slots > 0) {
-    
+    radialExpansion(grid, inputX, inputY);
   }
 }
 
@@ -60,4 +64,16 @@ int max(vector<int> &v) {
     }
   }
   return res;
+}
+
+void clearGrid(int (&g)[][], int &size) {
+  for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+      g[i][j] = 0; // unclaimed
+    }
+  }
+}
+
+void radialExpansion(int (&g)[][], int &size, vector<int> &x, vector<int> &y) {
+
 }
